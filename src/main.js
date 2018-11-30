@@ -4,12 +4,20 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+// 完整引入 element-ui 组件
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+// 注册 element-ui
+Vue.use(ElementUI);
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })
