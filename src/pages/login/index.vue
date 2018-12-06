@@ -6,7 +6,7 @@
         <el-input v-model="username"></el-input>
       </el-form-item>
       <el-form-item label="密　码:">
-        <el-input type="password" v-model="password"></el-input>
+        <el-input type="password" @keyup.enter.native="handleLogin" v-model="password"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { login } from "../../api";
 export default {
   data() {
     return {
@@ -28,31 +28,28 @@ export default {
   methods: {
     handleLogin() {
       //   console.log("执行登录操作!");
-      axios
-        .post("http://127.0.0.1:8888/api/private/v1/login", {
-          username: this.username,
-          password: this.password
-        })
-        .then(res => {
-          console.log(res);
-          if (res.data.meta.status === 200) {
-            //   成功跳转到首页
-            this.$message({
-              message: "恭喜您!登录成功!",
-              type: "success",
-              center: "true"
-            });
-            this.$router.push("/home");
-            // 将token存储到本地
-            localStorage.setItem("token", res.data.data.token);
-          } else {
-            this.$message({
-              message: "很遗憾!登录失败!",
-              type: "error",
-              center: "true"
-            });
-          }
-        });
+
+      login(this.username, this.password).then(res => {
+        console.log(res);
+        if (res.data.meta.status === 200) {
+          //   成功跳转到首页
+          // 将token存储到本地
+          localStorage.setItem("token", res.data.data.token);
+          this.$message({
+            message: "恭喜您!登录成功!",
+            type: "success",
+            center: "true"
+          });
+          // 跳转页面
+          this.$router.push("/home");
+        } else {
+          this.$message({
+            message: "很遗憾!登录失败!",
+            type: "error",
+            center: "true"
+          });
+        }
+      });
     }
   }
 };

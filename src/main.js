@@ -12,6 +12,20 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
+// 路由的全局导航卫士
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('token')
+
+  if (!token && to.path !== '/login') return next({
+    path: '/login'
+  })
+
+  if (token && to.path == '/login') return next({
+    path: '/home'
+  })
+
+  next()
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

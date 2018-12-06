@@ -39,6 +39,7 @@
       </el-col>
 
       <el-col :span="20">
+        <el-button @click="logout" type="danger" style="float: right; margin: 30px" size="small">注销</el-button>
         <router-view></router-view>
       </el-col>
     </el-row>
@@ -70,6 +71,16 @@ export default {
           this.$router.push("/home/powers");
           break;
       }
+    },
+    logout() {
+      // 清除token
+      localStorage.removeItem("token");
+      // 跳转回登录页
+      this.$router.push("/login");
+      this.$message({
+        type: "success",
+        message: "恭喜您!退出成功!"
+      });
     }
   }
 };
